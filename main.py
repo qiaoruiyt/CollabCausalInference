@@ -4,6 +4,7 @@ import random
 from argparse import ArgumentParser
 import matplotlib.pyplot as plt
 import warnings
+import mkl
 
 from ate_func import *
 from utils import *
@@ -11,11 +12,6 @@ from reward import compute_rho, compute_reward_value, sample_return
 
 import logging 
 logger = logging.getLogger(__name__)
-
-import platform
-
-def is_intel_cpu():
-    return 'Intel' in platform.processor()
     
     
 def main(args):
@@ -61,7 +57,7 @@ def main(args):
             print("Ground truth Surrogate: ", grand_ate)
             print("True ATE not available")
         
-        t = t[:, np.newaxis]
+        # t = t[:, np.newaxis]
         xall, tall, yall = x.copy(), t.copy(), y.copy()
         n = xall.shape[0]
         for j in range(base_n, n_partitions):
@@ -128,8 +124,6 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     print(args)
-    if is_intel_cpu():
-        import mkl
-        mkl.set_num_threads(args.n_threads)
+    mkl.set_num_threads(args.n_threads)
 
     main(args)

@@ -27,7 +27,7 @@ def plot_full(arrays, ylabel='Valuation', dataset=None, figure_folder='sens_plot
         os.makedirs(figure_folder)
     linewidth=1
     markersize=8
-    plt.figure(dpi=150)
+    plt.figure(dpi=600)
 
 
     cmap = plt.cm.get_cmap('viridis', len(arrays))
@@ -48,7 +48,7 @@ def plot_full(arrays, ylabel='Valuation', dataset=None, figure_folder='sens_plot
     plt.xlabel('Party Index')
     plt.ylabel(ylabel)
     plt.legend()
-    plt.savefig(figure_folder+str(dataset).lower()+'_'+ylabel.replace(' ', '_').lower()+'.png')
+    plt.savefig(figure_folder+str(dataset).lower()+'_'+ylabel.replace(' ', '_').lower()+'.pdf')
 
 def plot(x, y, xlabel='Perturbation', ylabel='Valuation', dataset=None, figure_folder='sens_plots/'):
     # y is (n x m) array, where m is the number of parties
@@ -60,7 +60,7 @@ def plot(x, y, xlabel='Perturbation', ylabel='Valuation', dataset=None, figure_f
         os.makedirs(figure_folder)
     linewidth=1
     markersize=2
-    plt.figure(dpi=150)
+    plt.figure(dpi=600)
 
     import matplotlib.ticker as mtick
     x = x-1
@@ -79,7 +79,7 @@ def plot(x, y, xlabel='Perturbation', ylabel='Valuation', dataset=None, figure_f
     plt.ylabel(ylabel)
     plt.legend()
     plt.tight_layout()
-    plt.savefig(figure_folder+str(dataset).lower()+'_'+ylabel.replace(' ', '_').lower()+'.png')
+    plt.savefig(figure_folder+str(dataset).lower()+'_'+ylabel.replace(' ', '_').lower()+'.pdf')
 
 def run_sensitivity_full(args):
     # TODO: plot sensitivity to the accuracy of the surrogate of ATE 

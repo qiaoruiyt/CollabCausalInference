@@ -199,7 +199,7 @@ class IPWEstimator:
             model_class = LogisticRegression
                 
         X_train = x
-        y_train = t
+        y_train = t.squeeze()
         m = model_class(**args).fit(X_train, y_train)
         
         w = m.predict_proba(x)[:, 1] # compute propensity score

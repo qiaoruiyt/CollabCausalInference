@@ -34,6 +34,7 @@ def get_std_bootstrap(x, t, y, Estimator, n_resamples=5000):
     idx = (idx,)
     # t = np.expand_dims(t, 1)
     # y = np.expand_dims(y, 1)
+    # print(x.shape, t.shape, y.shape)
     data = collate_causal_data(x,t,y)
     std = _get_se_bootstrap(idx, data, Estimator=Estimator, n_resamples=500)
     return std
@@ -210,7 +211,7 @@ def plot(v_ind, sh, return_value, dataset, estimator, figure_folder='figures/'):
     matplotlib.rcParams['pdf.fonttype'] = 42
     matplotlib.rcParams['ps.fonttype'] = 42
     matplotlib.rcParams['font.family'] = 'Helvetica'
-    matplotlib.rcParams['font.size'] = 13
+    matplotlib.rcParams['font.size'] = 14
 
     if not os.path.exists(figure_folder):
         os.makedirs(figure_folder)
@@ -218,7 +219,7 @@ def plot(v_ind, sh, return_value, dataset, estimator, figure_folder='figures/'):
     markersize=8
     xs = np.arange(1, len(return_value)+1)
     xticks = np.arange(1, len(return_value)+1, step=1)
-    plt.figure(dpi=150)
+    plt.figure(dpi=600)
     plt.plot(xs, v_ind, 'yo-', label='standalone value', linewidth=linewidth, markersize=markersize)
     plt.plot(xs, return_value, 'bo-', label='reward value', linewidth=linewidth, markersize=markersize)
     plt.plot(xs, sh, 'r^-', label='shapley value', linewidth=linewidth, markersize=markersize)
@@ -226,6 +227,7 @@ def plot(v_ind, sh, return_value, dataset, estimator, figure_folder='figures/'):
     plt.xlabel('Party Index')
     plt.ylabel('Valuation')
     plt.legend()
+    plt.tight_layout()
     plt.savefig(figure_folder+str(dataset).lower()+'_'+str(estimator).lower()+'_'+estimator.model_name.lower()+'.png')
 
 
@@ -233,7 +235,7 @@ def plot_gaussians(means, stds, colors=None, alpha=0.4, linewidth=1, markersize=
     xmin = min(means) - max(stds)
     xmax = max(means) + max(stds)
     x = np.linspace(xmin, xmax, 1000)
-    fig, ax = plt.subplots(dpi=150)
+    fig, ax = plt.subplots(dpi=600)
     if colors is None:
         cmap = plt.cm.get_cmap('viridis', len(means))
         colors = [cmap(i) for i in range(len(means))]
@@ -256,12 +258,13 @@ def plot_gaussians(means, stds, colors=None, alpha=0.4, linewidth=1, markersize=
 def visualize_estimates(ret, ground_truth, dataset=None, estimator=None, colors=['red', 'green', 'blue', 'yellow', 'cyan'], figure_folder='figures/'):   
     if not os.path.exists(figure_folder):
         os.makedirs(figure_folder)
-    plt.figure(dpi=150)
+    plt.figure(dpi=600)
     means = [i[0] for i in ret]
     stds = [i[1] for i in ret]
     ax = plot_gaussians(means, stds, colors=colors, xlabel='ATE Estimate', ylabel='Probability Density', title='Reward Distribution')
     ax.axvline(ground_truth, color='black', linestyle='--', linewidth=0.5, label='Ground Truth')
     plt.legend()
+    plt.tight_layout()
     if dataset is not None and estimator is not None:
         plt.savefig(figure_folder+'reward_'+str(dataset).lower()+'_'+str(estimator).lower()+'_'+estimator.model_name.lower()+'.png')
     else:
